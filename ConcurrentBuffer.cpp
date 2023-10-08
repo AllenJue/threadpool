@@ -2,7 +2,7 @@
 
 /**
  * @brief Construct a new Concurrent Buffer< T>:: Concurrent Buffer object
- * 
+ *  
  * @tparam T type of objects that the buffer will hold
  */
 template <typename T>
@@ -20,7 +20,9 @@ T ConcurrentBuffer<T>::poll() {
   if(dataDeque.empty()) {
     return NULL;
   }
-  return dataDeque.pop_front();
+  T value = dataDeque.front();
+  dataDeque.pop_front();
+  return value;
 }
 
 /**
