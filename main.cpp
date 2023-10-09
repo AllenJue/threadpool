@@ -1,19 +1,24 @@
 #include <iostream>
-#include <fstream>
-#include <getopt.h>
-#include <pthread.h>
-#include "ConcurrentBuffer.h"
+#include "ThreadPool.hpp"
+#include <chrono>
 
 using namespace std;
 
-int main() {
-  ConcurrentBuffer<int> cb;
-  cb.push(5);
-  cb.push(6);
-  printf("Hello, world!\n");
-  printf("%d\n", cb.poll());
-  printf("%d\n", cb.poll());
-  printf("%d\n", cb.poll());
+void test(int i, int arr[]) {
+  arr[i] = 100;
+}
 
+int main() {
+  ThreadPool tb(10); // Use the appropriate constructor arguments
+  int arr[100];
+  for(int i = 0; i < 100; i++) {
+    tb.submit(test, i, arr);
+  }
+  // std::this_thread::sleep_for(std::chrono::seconds(2));
+
+  tb.close();
+  for (int i = 0; i < 100; i++) {
+    std::printf("%d\n", i);
+  }
   return 0;
 }
