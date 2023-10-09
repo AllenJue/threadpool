@@ -18,7 +18,7 @@ int main() {
 
   tb.close();
   for (int i = 0; i < 100; i++) {
-    std::printf("%d\n", i);
+    std::printf("%d %d\n", i, arr[i]);
   }
   return 0;
 }
