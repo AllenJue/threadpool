@@ -32,7 +32,7 @@ public:
     while(dataDeque.empty() && !close) {
       empty.wait(lock);
     }
-    std::cout << "Polling\n";
+    // std::cout << "Polling\n";
 
     if(!dataDeque.empty()) {
       T value = dataDeque.front();
@@ -40,7 +40,7 @@ public:
       return value;
     }
 
-    std::cout << "Closing\n";
+    // std::cout << "Closing\n";
     return NULL;
   }
 
