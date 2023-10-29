@@ -1,12 +1,16 @@
 CC = g++
 CFLAGS = -Wall -Wextra -std=c++11 -pthread
 
-SOURCES = main.cpp ConcurrentBuffer.hpp ThreadPool.hpp
+# Source files
+SOURCES = src/main.cpp src/ConcurrentBuffer.hpp src/ThreadPool.hpp
 
-main: main.cpp
-	$(CC) $(CFLAGS) -o main main.cpp
+# Output executable
+OUTPUT = main
+
+$(OUTPUT): $(SOURCES)
+	$(CC) $(CFLAGS) -o $(OUTPUT) $(SOURCES)
 
 .PHONY: clean
 
 clean:
-	rm -f main
+	rm -f $(OUTPUT)

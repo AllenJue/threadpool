@@ -5,11 +5,22 @@
 
 
 void test(int i, int arr[]) {
-  arr[i] = 100;
+  arr[i] = 100; 
 }
 
-void callPing(std::string request) {
-  system(("ping " + request).c_str());
+void callPingPopen(std::string request) {
+    char buffer[128];
+    FILE* pipe = popen(("ping -c 4 " + request).c_str(), "r"); // Execute 'ping' command
+    if (!pipe) {
+        perror("popen");
+    }
+
+    while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
+        printf("%s\n", buffer); // Print the output
+    }
+
+    pclose(pipe);
+
 }
 
 int main() {
@@ -17,9 +28,12 @@ int main() {
   // int arr[100];
   std::vector<std::string> pings;
   pings.push_back("-c1 -s1 8.8.8.8");
+  pings.push_back("-c1 -s1 www.google.com");
+  pings.push_back("-c1 -s1 www.github.com");
+
   for(int i = 0; i < pings.size(); i++) {
     std::cout << pings[i] << std::endl;
-    tb.submit(callPing, pings[i]);
+    tb.submit(callPingPopen, pings[i]);
   }
   // int x = std::system("ping -c1 -s1 8.8.8.8");
   // if (x==0){
