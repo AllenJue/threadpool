@@ -96,6 +96,7 @@
     "semaphore": "cpp",
     "span": "cpp",
     "source_location": "cpp",
-    "shared_mutex": "cpp"
+    "shared_mutex": "cpp",
+    "stack": "cpp"
   }
 }

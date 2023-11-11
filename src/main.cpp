@@ -5,6 +5,7 @@
 #include <getopt.h>
 #include <boost/asio/thread_pool.hpp>
 #include <boost/asio/post.hpp>
+#include <fstream>
 
 /**
  * changes a char array buffer to a string 
@@ -79,22 +80,17 @@ void do_c_threadpool(int n_threads, std::vector<std::string> &requests,
 }
 
 int main(int argc, char** argv) {
-  // ThreadPool tb(10); // Use the appropriate constructor arguments
-  // int arr[100];
-  std::vector<std::string> pings;
-  pings.push_back("-c 1 8.8.8.8");
-  pings.push_back("-c 1 www.google.com");
-  pings.push_back("-c 1 www.github.com");
+  // print hardware capabilities
   unsigned int max_threads = std::thread::hardware_concurrency();
-
   printf("Max threads capable: %d\n", max_threads);
-  std::vector<std::string> results(pings.size());
 
   int option;
   int n_threads = 0;
   bool personal_mode = 0;
+  std::string input_path;
+
   while (true) {
-    option = getopt(argc, argv, "n:m:"); 
+    option = getopt(argc, argv, "n:m:i:"); 
     if(option == -1) {
       break;
     }
@@ -107,22 +103,47 @@ int main(int argc, char** argv) {
             personal_mode = atoi(optarg);
             // cout << "Threads: " << num_threads << endl;
             break;
+        case 'i':
+            input_path = optarg;
         default:
             // printf("Invalid input in command line\n");
             break;
     }
   }
 
-  if (n_threads == 1) {
-    // do sequential
-    do_sequential(std::ref(pings), std::ref(results));
-  } else if (personal_mode) {
-    do_my_threadpool(n_threads, std::ref(pings), std::ref(results));
-  } else {
-    do_c_threadpool(n_threads, std::ref(pings), std::ref(results));
-  }
-
   printf("Num threads: %d\n", n_threads);
   printf("Personal mode: %s\n", personal_mode ? "true" : "false");
+
+  // read in data to file
+  std::ifstream inputFile(input_path);
+  if (inputFile.fail()) {
+    std::cout << "FAIL TO OPEN: " << input_path << std::endl;
+    return 1;
+  }
+
+  int num_lines;
+  inputFile >> num_lines;
+
+  std::vector<std::string> websites;
+
+  for(int i = 0; i < num_lines; i++) {
+    std::string website;
+    inputFile >> website;
+    websites.push_back("-c 1 " + website);
+    // std::cout << website << std::endl;
+  }
+  printf("Num websites: %d\n", websites.size());
+  std::vector<std::string> results(websites.size());
+
+  if (n_threads == 0) {
+    // do sequential
+    do_sequential(std::ref(websites), std::ref(results));
+  } else if (personal_mode) {
+    // perform it with personal threadpool
+    do_my_threadpool(n_threads, std::ref(websites), std::ref(results));
+  } else {
+    // perform the test with boost threadpool
+    do_c_threadpool(n_threads, std::ref(websites), std::ref(results));
+  }
   return 0;
 }

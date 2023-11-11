@@ -11,15 +11,9 @@ private:
   ConcurrentBuffer<std::function<void()>> workQueue; /* Queue of functions */
   std::vector<std::thread> workers;
   bool complete;
-  int activeTasks = 0;
 public:
   /**
-   * @brief Submits a type of function and binds the arguments to the workQueue
-   * 
-   * @tparam F 
-   * @tparam Args 
-   * @param f 
-   * @param args 
+   * Submits a type of function and binds the arguments to the workQueue
    */
   template<typename F, typename... Args>
   void submit(F f, Args&&... args) {
