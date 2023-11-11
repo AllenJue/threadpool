@@ -3,9 +3,8 @@
 #include <chrono>
 #include <cstdlib> 
 #include <getopt.h>
-#include <boost/asio/io_service.hpp>
-#include <boost/bind.hpp>
-#include <boost/thread/thread.hpp>
+#include <boost/asio/thread_pool.hpp>
+#include <boost/asio/post.hpp>
 
 /**
  * changes a char array buffer to a string 
@@ -66,27 +65,17 @@ void do_my_threadpool(int n_threads, std::vector<std::string> &requests,
 
 void do_c_threadpool(int n_threads, std::vector<std::string> &requests, 
   std::vector<std::string> &results) {
-  // create threadpool and a channel to pass in work
-  boost::asio::io_service channel;
-  boost::thread_group threadpool;
-
-  // begin looking for work
-  boost::asio::io_service::work work(channel);
-
-  // create n threads in thread pool
-  for(int i = 0; i < n_threads; i++) {
-    threadpool.create_thread(
-      boost::bind(&boost::asio::io_service::run, &channel)
-    );
+  // create the number of threads for thread pool
+  boost::asio::thread_pool pool(n_threads); 
+  int n = requests.size();
+  // create a task that takes in relevant parameters
+  for(int i = 0; i < n; i++) {
+    boost::asio::post(pool, [&requests, &results, i]() {
+      callPingPopen(requests[i], i, results);
+    });  
   }
-  int n_requests = requests.size();
-
-  for(int i = 0; i < n_requests; i++) {
-    channel.post(boost::bind(callPingPopen, 
-                             requests[i], 
-                             i, 
-                             std::ref(results)));
-  }
+  // wait for job to finish
+  pool.join();
 }
 
 int main(int argc, char** argv) {
