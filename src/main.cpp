@@ -3,12 +3,13 @@
 #include <chrono>
 #include <cstdlib> 
 #include <getopt.h>
+#include <boost/asio/io_service.hpp>
+#include <boost/bind.hpp>
+#include <boost/thread/thread.hpp>
 
-
-void test(int i, int arr[]) {
-  arr[i] = 100; 
-}
-
+/**
+ * changes a char array buffer to a string 
+*/
 std::string bufferToString(char* buffer, int bufflen)
 {
     std::string ret(buffer, bufflen);
@@ -16,6 +17,10 @@ std::string bufferToString(char* buffer, int bufflen)
     return ret;
 }
 
+/**
+ * Has a request to a URL, index to ans array, and makes a ping request
+ * The result is captured as a string and placed into ans
+*/
 void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
     char buffer[128];
     std::string result = ""; // Create a string to accumulate the results
@@ -37,27 +42,64 @@ void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
     std::cout << ans[i] << std::endl;
 }
 
+/**
+ * Performs a sequential implementation of calling ping Popen to each request
+ * Stores the answers in results
+*/
+void do_sequential(std::vector<std::string> &requests, 
+  std::vector<std::string> &results) {
+  int n = requests.size();
+  for(int i = 0; i < n; i++) {
+    callPingPopen(requests[i], i, std::ref(results));
+  }
+}
 
+void do_my_threadpool(int n_threads, std::vector<std::string> &requests, 
+  std::vector<std::string> &results) {
+  ThreadPool tb(n_threads); // Use the appropriate constructor arguments
+  int n = requests.size();
+  for(int i = 0; i < n; i++) {
+    tb.submit(callPingPopen, requests[i], i, std::ref(results));
+  }
+  tb.close();
+}
+
+void do_c_threadpool(int n_threads, std::vector<std::string> &requests, 
+  std::vector<std::string> &results) {
+  // create threadpool and a channel to pass in work
+  boost::asio::io_service channel;
+  boost::thread_group threadpool;
+
+  // begin looking for work
+  boost::asio::io_service::work work(channel);
+
+  // create n threads in thread pool
+  for(int i = 0; i < n_threads; i++) {
+    threadpool.create_thread(
+      boost::bind(&boost::asio::io_service::run, &channel)
+    );
+  }
+  int n_requests = requests.size();
+
+  for(int i = 0; i < n_requests; i++) {
+    channel.post(boost::bind(callPingPopen, 
+                             requests[i], 
+                             i, 
+                             std::ref(results)));
+  }
+}
 
 int main(int argc, char** argv) {
   // ThreadPool tb(10); // Use the appropriate constructor arguments
   // int arr[100];
-  // std::vector<std::string> pings;
-  // pings.push_back("-c 1 8.8.8.8");
-  // pings.push_back("-c 1 www.google.com");
-  // pings.push_back("-c 1 www.github.com");
+  std::vector<std::string> pings;
+  pings.push_back("-c 1 8.8.8.8");
+  pings.push_back("-c 1 www.google.com");
+  pings.push_back("-c 1 www.github.com");
+  unsigned int max_threads = std::thread::hardware_concurrency();
 
-  // std::vector<std::string> results(pings.size());
-  // for(int i = 0; i < pings.size(); i++) {
-  //   std::cout << pings[i] << std::endl;
-  //   tb.submit(callPingPopen, pings[i], i, std::ref(results));
-  // }
-  // tb.close();
-  // for(int i = 0; i < results.size(); i++) {
-  //   std::cout << "ping: " << i << std::endl;
-  //   std::cout << results[i] << std::endl;
-  // }
-  // return 0;
+  printf("Max threads capable: %d\n", max_threads);
+  std::vector<std::string> results(pings.size());
 
   int option;
   int n_threads = 0;
@@ -84,10 +126,11 @@ int main(int argc, char** argv) {
 
   if (n_threads == 1) {
     // do sequential
+    do_sequential(std::ref(pings), std::ref(results));
   } else if (personal_mode) {
-
+    do_my_threadpool(n_threads, std::ref(pings), std::ref(results));
   } else {
-
+    do_c_threadpool(n_threads, std::ref(pings), std::ref(results));
   }
 
   printf("Num threads: %d\n", n_threads);
