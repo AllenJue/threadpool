@@ -97,6 +97,8 @@
     "span": "cpp",
     "source_location": "cpp",
     "shared_mutex": "cpp",
-    "stack": "cpp"
+    "stack": "cpp",
+    "coroutine": "cpp",
+    "future": "cpp"
   }
 }

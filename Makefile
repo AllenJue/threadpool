@@ -6,7 +6,7 @@ LIBS = -L/usr/local/Cellar/boost/1.83.0/lib -lboost_thread-mt -lboost_system-mt 
 SOURCES = src/main.cpp 
 
 # Output executable
-OUTPUT = main
+OUTPUT = threadpool
 
 $(OUTPUT): $(SOURCES)
 	$(CC) $(CFLAGS) -o $(OUTPUT) $(SOURCES) $(LIBS)

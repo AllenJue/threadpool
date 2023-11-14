@@ -1,0 +1,7 @@
+Hurdle # 1, threadpool implementations get slower as number of threads increases
+
+`fgets` is a blocking call. When a thread executes `fgets`, it will wait for input from the file stream. If no input is immediately available, the thread will block until there is data to read.
+
+In a multi-threaded environment, if one thread is waiting on a blocking call like `fgets`, it can potentially block the progress of other threads running in parallel. This behavior might limit the overall concurrency and performance gains expected from a multi-threaded design.
+
+If you're looking to optimize a multi-threaded program, especially when dealing with I/O operations, consider using asynchronous I/O techniques or non-blocking calls where possible. Libraries like Boost.Asio provide support for asynchronous I/O operations, enabling multiple operations to progress concurrently without blocking threads. This approach can maximize the utilization of resources and improve the overall performance of a multi-threaded application.

@@ -5,7 +5,12 @@
 #include <getopt.h>
 #include <boost/asio/thread_pool.hpp>
 #include <boost/asio/post.hpp>
+#include "ping.hpp"
+#include <boost/asio.hpp>
 #include <fstream>
+#include <atomic>
+
+std::atomic_int atomic_fails;
 
 /**
  * changes a char array buffer to a string 
@@ -17,29 +22,55 @@ std::string bufferToString(char* buffer, int bufflen)
     return ret;
 }
 
-/**
- * Has a request to a URL, index to ans array, and makes a ping request
- * The result is captured as a string and placed into ans
-*/
+// /**
+//  * Has a request to a URL, index to ans array, and makes a ping request
+//  * The result is captured as a string and placed into ans
+// */
+// void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
+//     char buffer[128];
+//     std::string result = ""; // Create a string to accumulate the results
+
+//     FILE* pipe = popen(("ping " + request).c_str(), "r"); // Execute 'ping' command
+//     if (!pipe) {
+//         perror("popen");
+//     }
+
+//     while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
+//       // printf("Buffer: %s\n", buffer); // Print the output
+//       result += buffer;
+//     }
+
+//     pclose(pipe);
+//     // printf("%s\n", result);
+//     // std::cout << result << std::endl;
+//     ans[i] = result;
+//     if (result.find("100.0% packet loss") != std::string::npos) {
+//       ++atomic_fails;
+//     }
+
+//     // std::cout << ans[i] << std::endl;
+// }
+
+void handlePing(const boost::system::error_code& error, int i, const std::string& result, std::vector<std::string>& ans) {
+    if (!error) {
+        ans[i] = result;
+        if (result.find("100.0% packet loss") != std::string::npos) {
+            ++atomic_fails;
+        }
+        // You can use ans[i] here if needed
+    } else {
+        std::cerr << "Error in asynchronous ping: " << error.message() << std::endl;
+    }
+}
+
+void asyncPing(boost::asio::io_service& io_service, const std::string& request, int i, std::vector<std::string>& ans) {
+    
+}
+
 void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
-    char buffer[128];
-    std::string result = ""; // Create a string to accumulate the results
-
-    FILE* pipe = popen(("ping " + request).c_str(), "r"); // Execute 'ping' command
-    if (!pipe) {
-        perror("popen");
-    }
-
-    while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
-      // printf("Buffer: %s\n", buffer); // Print the output
-      result += buffer;
-    }
-
-    pclose(pipe);
-    // printf("%s\n", result);
-    // std::cout << result << std::endl;
-    ans[i] = result;
-    std::cout << ans[i] << std::endl;
+    boost::asio::io_service io_service;
+    asyncPing(io_service, request, i, ans);
+    io_service.run();
 }
 
 /**
@@ -82,7 +113,7 @@ void do_c_threadpool(int n_threads, std::vector<std::string> &requests,
 int main(int argc, char** argv) {
   // print hardware capabilities
   unsigned int max_threads = std::thread::hardware_concurrency();
-  printf("Max threads capable: %d\n", max_threads);
+  // printf("Max threads capable: %d\n", max_threads);
 
   int option;
   int n_threads = 0;
@@ -111,8 +142,8 @@ int main(int argc, char** argv) {
     }
   }
 
-  printf("Num threads: %d\n", n_threads);
-  printf("Personal mode: %s\n", personal_mode ? "true" : "false");
+  // printf("Num threads: %d\n", n_threads);
+  // printf("Personal mode: %s\n", personal_mode ? "true" : "false");
 
   // read in data to file
   std::ifstream inputFile(input_path);
@@ -132,18 +163,29 @@ int main(int argc, char** argv) {
     websites.push_back("-c 1 " + website);
     // std::cout << website << std::endl;
   }
-  printf("Num websites: %d\n", websites.size());
+  // printf("Num websites: %lu\n", websites.size());
   std::vector<std::string> results(websites.size());
+  printf("Here!\n");
+  boost::asio::io_context io_context;
+  // create a pinger for the website to only listen to 1 message
+  pinger myPinger(io_context, "www.example.com", 1);
+  printf("Running\n");
+  io_context.run();
+  printf("Done\n");
+  // if (n_threads == 0) {
+  //   // do sequential
+  //   do_sequential(std::ref(websites), std::ref(results));
+  // } else if (personal_mode) {
+  //   // perform it with personal threadpool
+  //   do_my_threadpool(n_threads, std::ref(websites), std::ref(results));
+  // } else {
+  //   // perform the test with boost threadpool
+  //   do_c_threadpool(n_threads, std::ref(websites), std::ref(results));
+  // }
 
-  if (n_threads == 0) {
-    // do sequential
-    do_sequential(std::ref(websites), std::ref(results));
-  } else if (personal_mode) {
-    // perform it with personal threadpool
-    do_my_threadpool(n_threads, std::ref(websites), std::ref(results));
-  } else {
-    // perform the test with boost threadpool
-    do_c_threadpool(n_threads, std::ref(websites), std::ref(results));
-  }
+  // for(int i = 0; i < results.size(); i++) {
+  //   std::cout << results[i] << std::endl;
+  // }
+  std::cout << atomic_fails << std::endl;
   return 0;
 }
