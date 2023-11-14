@@ -26,7 +26,8 @@ class pinger
 public:
   pinger(boost::asio::io_context& io_context, const char* destination, size_t max)
     : resolver_(io_context), socket_(io_context, icmp::v4()),
-      timer_(io_context), sequence_number_(0), num_replies_(0), max_replies_(max), io_context_(&io_context)
+      timer_(io_context), sequence_number_(0), num_replies_(0), max_sent_(max),
+      num_sent_(0)
   {
     destination_ = *resolver_.resolve(icmp::v4(), destination, "").begin();
 
@@ -37,6 +38,9 @@ public:
 private:
   void start_send()
   {
+    if(num_sent_++ >= max_sent_) {
+      return;
+    }
     std::string body("\"Hello!\" from Asio ping.");
 
     // Create an ICMP header for an echo request.
@@ -66,7 +70,6 @@ private:
   {
     if (num_replies_ == 0)
       std::cout << "Request timed out" << std::endl;
-
     // Requests must be sent no less than one second apart.
     timer_.expires_at(time_sent_ + chrono::seconds(1));
     timer_.async_wait(boost::bind(&pinger::start_send, this));
@@ -117,8 +120,9 @@ private:
         << chrono::duration_cast<chrono::milliseconds>(elapsed).count()
         << std::endl;
     }
-
-    start_receive();
+    if(num_sent_ < max_sent_) {
+      start_receive();
+    }
   }
 
   static unsigned short get_identifier()
@@ -138,9 +142,8 @@ private:
   chrono::steady_clock::time_point time_sent_;
   boost::asio::streambuf reply_buffer_;
   std::size_t num_replies_;
-  std::size_t max_replies_;
-  boost::asio::io_context *io_context_;
-
+  std::size_t max_sent_;
+  std::size_t num_sent_;
 };
 
 // int main(int argc, char* argv[])

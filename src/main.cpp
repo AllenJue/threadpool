@@ -22,34 +22,34 @@ std::string bufferToString(char* buffer, int bufflen)
     return ret;
 }
 
-// /**
-//  * Has a request to a URL, index to ans array, and makes a ping request
-//  * The result is captured as a string and placed into ans
-// */
-// void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
-//     char buffer[128];
-//     std::string result = ""; // Create a string to accumulate the results
+/**
+ * Has a request to a URL, index to ans array, and makes a ping request
+ * The result is captured as a string and placed into ans
+*/
+void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
+    char buffer[128];
+    std::string result = ""; // Create a string to accumulate the results
 
-//     FILE* pipe = popen(("ping " + request).c_str(), "r"); // Execute 'ping' command
-//     if (!pipe) {
-//         perror("popen");
-//     }
+    FILE* pipe = popen(("ping " + request).c_str(), "r"); // Execute 'ping' command
+    if (!pipe) {
+        perror("popen");
+    }
 
-//     while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
-//       // printf("Buffer: %s\n", buffer); // Print the output
-//       result += buffer;
-//     }
+    while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
+      // printf("Buffer: %s\n", buffer); // Print the output
+      result += buffer;
+    }
 
-//     pclose(pipe);
-//     // printf("%s\n", result);
-//     // std::cout << result << std::endl;
-//     ans[i] = result;
-//     if (result.find("100.0% packet loss") != std::string::npos) {
-//       ++atomic_fails;
-//     }
+    pclose(pipe);
+    // printf("%s\n", result);
+    // std::cout << result << std::endl;
+    ans[i] = result;
+    if (result.find("100.0% packet loss") != std::string::npos) {
+      ++atomic_fails;
+    }
 
-//     // std::cout << ans[i] << std::endl;
-// }
+    // std::cout << ans[i] << std::endl;
+}
 
 void handlePing(const boost::system::error_code& error, int i, const std::string& result, std::vector<std::string>& ans) {
     if (!error) {
@@ -63,20 +63,22 @@ void handlePing(const boost::system::error_code& error, int i, const std::string
     }
 }
 
-void asyncPing(boost::asio::io_service& io_service, const std::string& request, int i, std::vector<std::string>& ans) {
+// void asyncPing(boost::asio::io_service& io_service, const std::string& request, int i, std::vector<std::string>& ans) {
     
-}
+// }
 
-void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
-    boost::asio::io_service io_service;
-    asyncPing(io_service, request, i, ans);
-    io_service.run();
-}
+// void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
+//     boost::asio::io_service io_service;
+//     asyncPing(io_service, request, i, ans);
+//     io_service.run();
+// }
 
 /**
- * Performs a sequential implementation of calling ping Popen to each request
- * Stores the answers in results
-*/
+ * @brief Performs a sequential implementation of calling ping Popen to each request. Stores the answers in results
+ * 
+ * @param requests a reference to the list of websites to visit
+ * @param results  a reference to the list of results to record in
+ */
 void do_sequential(std::vector<std::string> &requests, 
   std::vector<std::string> &results) {
   int n = requests.size();
@@ -85,6 +87,13 @@ void do_sequential(std::vector<std::string> &requests,
   }
 }
 
+/**
+ * @brief Performs my threadpool implementation with PingOpen. Inefficient due to PingOpen calling fgets, which blocks all running threads
+ * 
+ * @param n_threads 
+ * @param requests a reference to the list of websites to visit
+ * @param results  a reference to the list of results to record in
+ */
 void do_my_threadpool(int n_threads, std::vector<std::string> &requests, 
   std::vector<std::string> &results) {
   ThreadPool tb(n_threads); // Use the appropriate constructor arguments
@@ -93,8 +102,14 @@ void do_my_threadpool(int n_threads, std::vector<std::string> &requests,
     tb.submit(callPingPopen, requests[i], i, std::ref(results));
   }
   tb.close();
-}
+} 
 
+/**
+* @brief Performs boost threadpool implementation with PingOpen. Inefficient due to PingOpen calling fgets, which blocks all running threads
+ * @param n_threads Number of threads to spawn
+ * @param requests a reference to the list of websites to visit
+ * @param results  a reference to the list of results to record in
+ */
 void do_c_threadpool(int n_threads, std::vector<std::string> &requests, 
   std::vector<std::string> &results) {
   // create the number of threads for thread pool
@@ -136,6 +151,7 @@ int main(int argc, char** argv) {
             break;
         case 'i':
             input_path = optarg;
+            break;
         default:
             // printf("Invalid input in command line\n");
             break;
@@ -167,10 +183,15 @@ int main(int argc, char** argv) {
   std::vector<std::string> results(websites.size());
   printf("Here!\n");
   boost::asio::io_context io_context;
+  boost::asio::io_context io_context2;
+
   // create a pinger for the website to only listen to 1 message
-  pinger myPinger(io_context, "www.example.com", 1);
+  pinger myPinger(io_context, "www.github.com", 1);
+  pinger myPinger2(io_context2, "www.google.com", 1);
+
   printf("Running\n");
   io_context.run();
+  io_context2.run();
   printf("Done\n");
   // if (n_threads == 0) {
   //   // do sequential
