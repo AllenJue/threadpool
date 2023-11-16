@@ -5,12 +5,18 @@
 #include <getopt.h>
 #include <boost/asio/thread_pool.hpp>
 #include <boost/asio/post.hpp>
-#include "ping.hpp"
+// #include "ping.hpp"  Look in ICMP_discard
 #include <boost/asio.hpp>
 #include <fstream>
 #include <atomic>
 
 std::atomic_int atomic_fails;
+
+// flags to set
+bool popen_mode = false;
+int n_threads = 0;
+bool personal_mode = false;
+std::string input_path = "";
 
 /**
  * changes a char array buffer to a string 
@@ -30,7 +36,8 @@ void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
     char buffer[128];
     std::string result = ""; // Create a string to accumulate the results
 
-    FILE* pipe = popen(("ping " + request).c_str(), "r"); // Execute 'ping' command
+    // Execute 'ping' command
+    FILE* pipe = popen(("ping -c 1 " + request).c_str(), "r"); 
     if (!pipe) {
         perror("popen");
     }
@@ -48,7 +55,7 @@ void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
       ++atomic_fails;
     }
 
-    // std::cout << ans[i] << std::endl;
+    std::cout << ans[i] << std::endl;
 }
 
 void handlePing(const boost::system::error_code& error, int i, const std::string& result, std::vector<std::string>& ans) {
@@ -67,11 +74,12 @@ void handlePing(const boost::system::error_code& error, int i, const std::string
     
 // }
 
-// void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
-//     boost::asio::io_service io_service;
-//     asyncPing(io_service, request, i, ans);
-//     io_service.run();
-// }
+void callBoost(boost::asio::io_context& io_context, std::string request, int i, std::vector<std::string>& ans) {
+  //  create a pinger for the website to only listen to 1 message
+  std::cout << request << std::endl;
+  pinger myPinger(io_context, request.c_str(), 1, request, i, std::ref(ans));
+  io_context.run();
+}
 
 /**
  * @brief Performs a sequential implementation of calling ping Popen to each request. Stores the answers in results
@@ -82,8 +90,14 @@ void handlePing(const boost::system::error_code& error, int i, const std::string
 void do_sequential(std::vector<std::string> &requests, 
   std::vector<std::string> &results) {
   int n = requests.size();
+  boost::asio::io_context io_context;
+
   for(int i = 0; i < n; i++) {
-    callPingPopen(requests[i], i, std::ref(results));
+    if(popen_mode) {
+      callPingPopen(requests[i], i, std::ref(results));
+    } else {
+      callBoost(std::ref(io_context), requests[i], i, std::ref(results));
+    }
   }
 }
 
@@ -98,8 +112,14 @@ void do_my_threadpool(int n_threads, std::vector<std::string> &requests,
   std::vector<std::string> &results) {
   ThreadPool tb(n_threads); // Use the appropriate constructor arguments
   int n = requests.size();
+  boost::asio::io_context io_context;
+
   for(int i = 0; i < n; i++) {
-    tb.submit(callPingPopen, requests[i], i, std::ref(results));
+    if(popen_mode) {
+      tb.submit(callPingPopen, requests[i], i, std::ref(results));
+    } else {
+      tb.submit(callBoost, std::ref(io_context), requests[i], i, std::ref(results));
+    }
   }
   tb.close();
 } 
@@ -115,11 +135,20 @@ void do_c_threadpool(int n_threads, std::vector<std::string> &requests,
   // create the number of threads for thread pool
   boost::asio::thread_pool pool(n_threads); 
   int n = requests.size();
+  boost::asio::io_context io_context;
+
   // create a task that takes in relevant parameters
   for(int i = 0; i < n; i++) {
-    boost::asio::post(pool, [&requests, &results, i]() {
-      callPingPopen(requests[i], i, results);
-    });  
+    if(popen_mode) {
+      boost::asio::post(pool, [&requests, &results, i]() {
+        callPingPopen(requests[i], i, results);
+      });  
+    } else {
+      boost::asio::post(pool, [&io_context, &requests, &results, i]() {
+        callBoost(io_context, requests[i], i, results);
+      });  
+    }
+    
   }
   // wait for job to finish
   pool.join();
@@ -131,12 +160,9 @@ int main(int argc, char** argv) {
   // printf("Max threads capable: %d\n", max_threads);
 
   int option;
-  int n_threads = 0;
-  bool personal_mode = 0;
-  std::string input_path;
 
   while (true) {
-    option = getopt(argc, argv, "n:m:i:"); 
+    option = getopt(argc, argv, "n:m:i:p:"); 
     if(option == -1) {
       break;
     }
@@ -151,6 +177,9 @@ int main(int argc, char** argv) {
             break;
         case 'i':
             input_path = optarg;
+            break;
+        case 'p':
+            popen_mode = atoi(optarg);
             break;
         default:
             // printf("Invalid input in command line\n");
@@ -176,33 +205,29 @@ int main(int argc, char** argv) {
   for(int i = 0; i < num_lines; i++) {
     std::string website;
     inputFile >> website;
-    websites.push_back("-c 1 " + website);
-    // std::cout << website << std::endl;
+    websites.push_back(website);
   }
   // printf("Num websites: %lu\n", websites.size());
   std::vector<std::string> results(websites.size());
-  printf("Here!\n");
-  boost::asio::io_context io_context;
-  boost::asio::io_context io_context2;
+  // boost::asio::io_context io_context;
+  // boost::asio::io_context io_context2;
 
   // create a pinger for the website to only listen to 1 message
-  pinger myPinger(io_context, "www.github.com", 1);
-  pinger myPinger2(io_context2, "www.google.com", 1);
+  // pinger myPinger(io_context, "www.github.com", 1);
+  // pinger myPinger2(io_context2, "www.google.com", 1);
 
-  printf("Running\n");
-  io_context.run();
-  io_context2.run();
-  printf("Done\n");
-  // if (n_threads == 0) {
-  //   // do sequential
-  //   do_sequential(std::ref(websites), std::ref(results));
-  // } else if (personal_mode) {
-  //   // perform it with personal threadpool
-  //   do_my_threadpool(n_threads, std::ref(websites), std::ref(results));
-  // } else {
-  //   // perform the test with boost threadpool
-  //   do_c_threadpool(n_threads, std::ref(websites), std::ref(results));
-  // }
+  // io_context.run();
+  // io_context2.run();
+  if (n_threads == 0) {
+    // do sequential
+    do_sequential(std::ref(websites), std::ref(results));
+  } else if (personal_mode) {
+    // perform it with personal threadpool
+    do_my_threadpool(n_threads, std::ref(websites), std::ref(results));
+  } else {
+    // perform the test with boost threadpool
+    do_c_threadpool(n_threads, std::ref(websites), std::ref(results));
+  }
 
   // for(int i = 0; i < results.size(); i++) {
   //   std::cout << results[i] << std::endl;

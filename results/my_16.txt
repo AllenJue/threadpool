@@ -1,0 +1,75 @@
+google.com
+baidu.comwikipedia.orgyahoo.comyandex.ru
+whatsapp.com
+
+instagram.comtwitter.com
+pornhub.com
+live.comyahoo.co.jp
+facebook.com
+tiktok.com
+
+
+youtube.com
+
+amazon.com
+
+reddit.com
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=34
+
+32 bytes from 208.80.153.224: icmp_seq=1, ttl=58, time=34
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=5
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=34
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=35
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=34
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=35
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=35
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=35
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=10
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=5
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=4
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=10
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=1
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=0
+
+32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=0
+
+docomo.ne.jp
+linkedin.com
+openai.com
+office.com
+xhamster.com
+dzen.ru
+github.com
+bing.com
+bilibili.com
+mail.ru
+vk.com
+pinterest.com
+microsoft.com
+discord.com
+weather.com
+max.com
+twitch.tv
+turbopages.org
+zoom.us
+duckduckgo.com
+qq.com
+xhamster.desi
+sharepoint.com
+cricbuzz.com
+stripchat.com
+fandom.com
+0

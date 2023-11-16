@@ -24,10 +24,10 @@ namespace chrono = boost::asio::chrono;
 class pinger
 {
 public:
-  pinger(boost::asio::io_context& io_context, const char* destination, size_t max)
+  pinger(boost::asio::io_context& io_context, const char* destination, size_t max, std::string request, int id,  std::vector<std::string>& ans)
     : resolver_(io_context), socket_(io_context, icmp::v4()),
       timer_(io_context), sequence_number_(0), num_replies_(0), max_sent_(max),
-      num_sent_(0)
+      num_sent_(0), request_(request), id_(id), ans_(ans)
   {
     destination_ = *resolver_.resolve(icmp::v4(), destination, "").begin();
 
@@ -112,13 +112,16 @@ private:
       // Print out some information about the reply packet.
       chrono::steady_clock::time_point now = chrono::steady_clock::now();
       chrono::steady_clock::duration elapsed = now - time_sent_;
-      std::cout << length - ipv4_hdr.header_length()
-        << " bytes from " << ipv4_hdr.source_address()
-        << ": icmp_seq=" << icmp_hdr.sequence_number()
-        << ", ttl=" << ipv4_hdr.time_to_live()
-        << ", time="
-        << chrono::duration_cast<chrono::milliseconds>(elapsed).count()
-        << std::endl;
+      std::ostringstream output;
+      output << length - ipv4_hdr.header_length()
+            << " bytes from " << ipv4_hdr.source_address()
+            << ": icmp_seq=" << icmp_hdr.sequence_number()
+            << ", ttl=" << ipv4_hdr.time_to_live()
+            << ", time=" << chrono::duration_cast<chrono::milliseconds>(elapsed).count()
+            << std::endl;
+      std::string result = output.str();
+      std::cout << result << std::endl;
+      ans_[id_] = result;
     }
     if(num_sent_ < max_sent_) {
       start_receive();
@@ -143,7 +146,10 @@ private:
   boost::asio::streambuf reply_buffer_;
   std::size_t num_replies_;
   std::size_t max_sent_;
-  std::size_t num_sent_;
+  std::atomic_int num_sent_;
+  std::string request_;
+  int id_;
+  std::vector<std::string> &ans_;
 };
 
 // int main(int argc, char* argv[])
