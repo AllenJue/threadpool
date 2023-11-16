@@ -1,75 +1,295 @@
-google.com
-baidu.comwikipedia.orgyahoo.comyandex.ru
-whatsapp.com
+PING google.com (142.250.138.100): 56 data bytes
+64 bytes from 142.250.138.100: icmp_seq=0 ttl=58 time=25.580 ms
 
-instagram.comtwitter.com
-pornhub.com
-live.comyahoo.co.jp
-facebook.com
-tiktok.com
+--- google.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 25.580/25.580/25.580/0.000 ms
 
+PING youtube.com (142.250.115.190): 56 data bytes
+64 bytes from 142.250.115.190: icmp_seq=0 ttl=58 time=24.340 ms
 
-youtube.com
+--- youtube.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 24.340/24.340/24.340/0.000 ms
 
-amazon.com
+PING facebook.com (31.13.93.35): 56 data bytes
+64 bytes from 31.13.93.35: icmp_seq=0 ttl=56 time=22.714 ms
 
-reddit.com
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=34
+--- facebook.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 22.714/22.714/22.714/0.000 ms
 
-32 bytes from 208.80.153.224: icmp_seq=1, ttl=58, time=34
+PING instagram.com (31.13.93.174): 56 data bytes
+64 bytes from 31.13.93.174: icmp_seq=0 ttl=55 time=21.331 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=5
+--- instagram.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 21.331/21.331/21.331/0.000 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=34
+PING twitter.com (104.244.42.129): 56 data bytes
+64 bytes from 104.244.42.129: icmp_seq=0 ttl=53 time=38.486 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=35
+--- twitter.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 38.486/38.486/38.486/0.000 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=34
+PING baidu.com (39.156.66.10): 56 data bytes
+64 bytes from 39.156.66.10: icmp_seq=0 ttl=46 time=289.073 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=35
+--- baidu.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 289.073/289.073/289.073/0.000 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=35
+PING wikipedia.org (208.80.153.224): 56 data bytes
+64 bytes from 208.80.153.224: icmp_seq=0 ttl=58 time=24.080 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=35
+--- wikipedia.org ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 24.080/24.080/24.080/0.000 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=10
+PING yahoo.com (74.6.231.21): 56 data bytes
+64 bytes from 74.6.231.21: icmp_seq=0 ttl=53 time=53.083 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=5
+--- yahoo.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 53.083/53.083/53.083/0.000 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=4
+PING yandex.ru (77.88.55.88): 56 data bytes
+64 bytes from 77.88.55.88: icmp_seq=0 ttl=244 time=189.088 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=10
+--- yandex.ru ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 189.088/189.088/189.088/0.000 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=1
+PING whatsapp.com (31.13.93.53): 56 data bytes
+64 bytes from 31.13.93.53: icmp_seq=0 ttl=56 time=99.869 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=0
+--- whatsapp.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 99.869/99.869/99.869/0.000 ms
 
-32 bytes from 204.79.197.212: icmp_seq=1, ttl=120, time=0
+PING amazon.com (52.94.236.248): 56 data bytes
+64 bytes from 52.94.236.248: icmp_seq=0 ttl=241 time=56.902 ms
 
-docomo.ne.jp
-linkedin.com
-openai.com
-office.com
-xhamster.com
-dzen.ru
-github.com
-bing.com
-bilibili.com
-mail.ru
-vk.com
-pinterest.com
-microsoft.com
-discord.com
-weather.com
-max.com
-twitch.tv
-turbopages.org
-zoom.us
-duckduckgo.com
-qq.com
-xhamster.desi
-sharepoint.com
-cricbuzz.com
-stripchat.com
-fandom.com
+--- amazon.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 56.902/56.902/56.902/0.000 ms
+
+PING tiktok.com (108.156.211.95): 56 data bytes
+64 bytes from 108.156.211.95: icmp_seq=0 ttl=248 time=21.306 ms
+
+--- tiktok.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 21.306/21.306/21.306/0.000 ms
+
+PING pornhub.com (66.254.114.41): 56 data bytes
+64 bytes from 66.254.114.41: icmp_seq=0 ttl=57 time=20.108 ms
+
+--- pornhub.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 20.108/20.108/20.108/0.000 ms
+
+PING live.com (204.79.197.212): 56 data bytes
+64 bytes from 204.79.197.212: icmp_seq=0 ttl=120 time=36.066 ms
+
+--- live.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 36.066/36.066/36.066/0.000 ms
+
+PING yahoo.co.jp (182.22.25.124): 56 data bytes
+64 bytes from 182.22.25.124: icmp_seq=0 ttl=48 time=174.900 ms
+
+--- yahoo.co.jp ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 174.900/174.900/174.900/0.000 ms
+
+PING reddit.com (151.101.193.140): 56 data bytes
+64 bytes from 151.101.193.140: icmp_seq=0 ttl=59 time=25.458 ms
+
+--- reddit.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 25.458/25.458/25.458/0.000 ms
+
+PING docomo.ne.jp (52.223.34.187): 56 data bytes
+64 bytes from 52.223.34.187: icmp_seq=0 ttl=246 time=19.414 ms
+
+--- docomo.ne.jp ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 19.414/19.414/19.414/0.000 ms
+
+PING linkedin.com (13.107.42.14): 56 data bytes
+64 bytes from 13.107.42.14: icmp_seq=0 ttl=120 time=19.162 ms
+
+--- linkedin.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 19.162/19.162/19.162/0.000 ms
+
+PING openai.com (13.107.213.42): 56 data bytes
+64 bytes from 13.107.213.42: icmp_seq=0 ttl=57 time=21.910 ms
+
+--- openai.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 21.910/21.910/21.910/0.000 ms
+
+PING office.com (13.107.6.156): 56 data bytes
+64 bytes from 13.107.6.156: icmp_seq=0 ttl=120 time=18.609 ms
+
+--- office.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 18.609/18.609/18.609/0.000 ms
+
+PING xhamster.com (104.18.183.10): 56 data bytes
+64 bytes from 104.18.183.10: icmp_seq=0 ttl=58 time=19.882 ms
+
+--- xhamster.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 19.882/19.882/19.882/0.000 ms
+
+PING dzen.ru (62.217.160.2): 56 data bytes
+64 bytes from 62.217.160.2: icmp_seq=0 ttl=42 time=167.915 ms
+
+--- dzen.ru ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 167.915/167.915/167.915/0.000 ms
+
+PING github.com (140.82.113.3): 56 data bytes
+64 bytes from 140.82.113.3: icmp_seq=0 ttl=54 time=58.002 ms
+
+--- github.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 58.002/58.002/58.002/0.000 ms
+
+PING bing.com (13.107.21.200): 56 data bytes
+64 bytes from 13.107.21.200: icmp_seq=0 ttl=120 time=22.033 ms
+
+--- bing.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 22.033/22.033/22.033/0.000 ms
+
+PING bilibili.com (139.159.241.37): 56 data bytes
+64 bytes from 139.159.241.37: icmp_seq=0 ttl=41 time=246.785 ms
+
+--- bilibili.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 246.785/246.785/246.785/0.000 ms
+
+PING mail.ru (217.69.139.202): 56 data bytes
+64 bytes from 217.69.139.202: icmp_seq=0 ttl=46 time=300.211 ms
+
+--- mail.ru ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 300.211/300.211/300.211/0.000 ms
+
+PING vk.com (87.240.132.67): 56 data bytes
+64 bytes from 87.240.132.67: icmp_seq=0 ttl=49 time=159.340 ms
+
+--- vk.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 159.340/159.340/159.340/0.000 ms
+
+PING pinterest.com (151.101.64.84): 56 data bytes
+64 bytes from 151.101.64.84: icmp_seq=0 ttl=59 time=21.525 ms
+
+--- pinterest.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 21.525/21.525/21.525/0.000 ms
+
+PING microsoft.com (20.112.250.133): 56 data bytes
+64 bytes from 20.112.250.133: icmp_seq=0 ttl=115 time=37.083 ms
+
+--- microsoft.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 37.083/37.083/37.083/0.000 ms
+
+PING discord.com (162.159.128.233): 56 data bytes
+64 bytes from 162.159.128.233: icmp_seq=0 ttl=58 time=16.175 ms
+
+--- discord.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 16.175/16.175/16.175/0.000 ms
+
+PING weather.com (23.201.170.186): 56 data bytes
+64 bytes from 23.201.170.186: icmp_seq=0 ttl=54 time=54.047 ms
+
+--- weather.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 54.047/54.047/54.047/0.000 ms
+
+PING max.com (18.238.171.26): 56 data bytes
+64 bytes from 18.238.171.26: icmp_seq=0 ttl=248 time=20.498 ms
+
+--- max.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 20.498/20.498/20.498/0.000 ms
+
+PING twitch.tv (151.101.130.167): 56 data bytes
+64 bytes from 151.101.130.167: icmp_seq=0 ttl=59 time=19.649 ms
+
+--- twitch.tv ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 19.649/19.649/19.649/0.000 ms
+
+PING turbopages.org (213.180.204.113): 56 data bytes
+64 bytes from 213.180.204.113: icmp_seq=0 ttl=234 time=218.435 ms
+
+--- turbopages.org ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 218.435/218.435/218.435/0.000 ms
+
+PING zoom.us (170.114.52.2): 56 data bytes
+64 bytes from 170.114.52.2: icmp_seq=0 ttl=58 time=17.617 ms
+
+--- zoom.us ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 17.617/17.617/17.617/0.000 ms
+
+PING duckduckgo.com (40.89.244.232): 56 data bytes
+64 bytes from 40.89.244.232: icmp_seq=0 ttl=115 time=32.339 ms
+
+--- duckduckgo.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 32.339/32.339/32.339/0.000 ms
+
+PING qq.com (123.150.76.218): 56 data bytes
+64 bytes from 123.150.76.218: icmp_seq=0 ttl=48 time=346.699 ms
+
+--- qq.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 346.699/346.699/346.699/0.000 ms
+
+PING xhamster.desi (104.17.167.60): 56 data bytes
+64 bytes from 104.17.167.60: icmp_seq=0 ttl=58 time=16.331 ms
+
+--- xhamster.desi ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 16.331/16.331/16.331/0.000 ms
+
+PING sharepoint.com (13.107.6.168): 56 data bytes
+64 bytes from 13.107.6.168: icmp_seq=0 ttl=120 time=149.838 ms
+
+--- sharepoint.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 149.838/149.838/149.838/0.000 ms
+
+PING cricbuzz.com (35.200.167.142): 56 data bytes
+64 bytes from 35.200.167.142: icmp_seq=0 ttl=109 time=268.801 ms
+
+--- cricbuzz.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 268.801/268.801/268.801/0.000 ms
+
+PING stripchat.com (104.18.63.126): 56 data bytes
+64 bytes from 104.18.63.126: icmp_seq=0 ttl=58 time=16.045 ms
+
+--- stripchat.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 16.045/16.045/16.045/0.000 ms
+
+PING fandom.com (199.232.208.194): 56 data bytes
+64 bytes from 199.232.208.194: icmp_seq=0 ttl=58 time=18.509 ms
+
+--- fandom.com ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 18.509/18.509/18.509/0.000 ms
+
 0

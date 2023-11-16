@@ -1,1 +1,1 @@
-sudo time ./threadpool -n 16 -m 0 -p 0 -i ~/Downloads/Cs378-Concurrency/threadpool/top_websites.txt > ~/Downloads/Cs378-Concurrency/threadpool/results/my_16.txt
+sudo time ./threadpool -n 0 -m 0 -i ~/Downloads/Cs378-Concurrency/threadpool/top_websites.txt > ~/Downloads/Cs378-Concurrency/threadpool/results/my_16.txt

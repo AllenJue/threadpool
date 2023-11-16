@@ -13,7 +13,6 @@
 std::atomic_int atomic_fails;
 
 // flags to set
-bool popen_mode = false;
 int n_threads = 0;
 bool personal_mode = false;
 std::string input_path = "";
@@ -70,17 +69,6 @@ void handlePing(const boost::system::error_code& error, int i, const std::string
     }
 }
 
-// void asyncPing(boost::asio::io_service& io_service, const std::string& request, int i, std::vector<std::string>& ans) {
-    
-// }
-
-void callBoost(boost::asio::io_context& io_context, std::string request, int i, std::vector<std::string>& ans) {
-  //  create a pinger for the website to only listen to 1 message
-  std::cout << request << std::endl;
-  pinger myPinger(io_context, request.c_str(), 1, request, i, std::ref(ans));
-  io_context.run();
-}
-
 /**
  * @brief Performs a sequential implementation of calling ping Popen to each request. Stores the answers in results
  * 
@@ -93,11 +81,7 @@ void do_sequential(std::vector<std::string> &requests,
   boost::asio::io_context io_context;
 
   for(int i = 0; i < n; i++) {
-    if(popen_mode) {
-      callPingPopen(requests[i], i, std::ref(results));
-    } else {
-      callBoost(std::ref(io_context), requests[i], i, std::ref(results));
-    }
+    callPingPopen(requests[i], i, std::ref(results));
   }
 }
 
@@ -115,11 +99,7 @@ void do_my_threadpool(int n_threads, std::vector<std::string> &requests,
   boost::asio::io_context io_context;
 
   for(int i = 0; i < n; i++) {
-    if(popen_mode) {
-      tb.submit(callPingPopen, requests[i], i, std::ref(results));
-    } else {
-      tb.submit(callBoost, std::ref(io_context), requests[i], i, std::ref(results));
-    }
+    tb.submit(callPingPopen, requests[i], i, std::ref(results));
   }
   tb.close();
 } 
@@ -139,16 +119,9 @@ void do_c_threadpool(int n_threads, std::vector<std::string> &requests,
 
   // create a task that takes in relevant parameters
   for(int i = 0; i < n; i++) {
-    if(popen_mode) {
-      boost::asio::post(pool, [&requests, &results, i]() {
-        callPingPopen(requests[i], i, results);
-      });  
-    } else {
-      boost::asio::post(pool, [&io_context, &requests, &results, i]() {
-        callBoost(io_context, requests[i], i, results);
-      });  
-    }
-    
+    boost::asio::post(pool, [&requests, &results, i]() {
+      callPingPopen(requests[i], i, results);
+    });  
   }
   // wait for job to finish
   pool.join();
@@ -162,7 +135,7 @@ int main(int argc, char** argv) {
   int option;
 
   while (true) {
-    option = getopt(argc, argv, "n:m:i:p:"); 
+    option = getopt(argc, argv, "n:m:i:"); 
     if(option == -1) {
       break;
     }
@@ -177,9 +150,6 @@ int main(int argc, char** argv) {
             break;
         case 'i':
             input_path = optarg;
-            break;
-        case 'p':
-            popen_mode = atoi(optarg);
             break;
         default:
             // printf("Invalid input in command line\n");
