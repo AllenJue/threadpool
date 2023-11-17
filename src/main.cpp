@@ -54,7 +54,7 @@ void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
       ++atomic_fails;
     }
 
-    std::cout << ans[i] << std::endl;
+    // std::cout << ans[i] << std::endl;
 }
 
 void handlePing(const boost::system::error_code& error, int i, const std::string& result, std::vector<std::string>& ans) {
