@@ -115,8 +115,6 @@ void do_c_threadpool(int n_threads, std::vector<std::string> &requests,
   // create the number of threads for thread pool
   boost::asio::thread_pool pool(n_threads); 
   int n = requests.size();
-  boost::asio::io_context io_context;
-
   // create a task that takes in relevant parameters
   for(int i = 0; i < n; i++) {
     boost::asio::post(pool, [&requests, &results, i]() {
