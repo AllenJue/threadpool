@@ -1,9 +1,9 @@
 # Name of the text file to save the results
 input_file="/Users/allenjue/Downloads/Cs378-Concurrency/threadpool/top_websites.txt"
 
-time_file="/Users/allenjue/Downloads/Cs378-Concurrency/threadpool/timing/c_timing.csv"
+time_file="/Users/allenjue/Downloads/Cs378-Concurrency/threadpool/timing/my_timing.csv"
 
-fail_file="/Users/allenjue/Downloads/Cs378-Concurrency/threadpool/timing/c_fail.csv"
+fail_file="/Users/allenjue/Downloads/Cs378-Concurrency/threadpool/timing/my_fail.csv"
 # Clear the file if it already exists
 > $time_file
 > $fail_file
@@ -12,7 +12,7 @@ echo "threads, execTime" > $time_file
 echo "threads, totalFails" > $fail_file
 
 
-mode=0
+mode=1
 num_threads=(1 2 4 8 16 32 64 128 256 512 1024)
 
 for threads in "${num_threads[@]}"; do

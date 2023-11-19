@@ -3,6 +3,7 @@ library("viridis")
 
 avg.seq.time = 9.671273700
 avg.seq.fail = 5 / (42 * 10)
+avg.seq.fail
 
 df.c.time = read.csv("./Downloads/Cs378-Concurrency/threadpool/timing/c_timing.csv")
 df.my.time = read.csv("./Downloads/Cs378-Concurrency/threadpool/timing/my_timing.csv")
@@ -55,13 +56,27 @@ plotGraph <- function(results, title, legend, colors) {
 
 palette_colors <- viridis(8)
 
-plotGraph(df.c.time, "Boost ASIO Threadpool Speedup", c("Boost ASIO"), c("peach"))
-plotGraph(df.my.time, "Personal Threadpool Implementation Speedup", c("Personal Threadpool"), c("steelblue"))
+plotGraph(df.c.time, "Boost ASIO Threadpool Speedup", 
+          c("Boost ASIO"), c(palette_colors[1]))
+plotGraph(df.my.time, "Personal Threadpool Implementation Speedup", 
+          c("Personal Threadpool"), c(palette_colors[6]))
 
 plotGraph2(df.c.time, 
            df.my.time, 
            "Boost ASIO and Personal Implementation Speedup Comparison",
            c("Boost ASIO", "Personal Threadpool"),
-           c("pink", "steelblue"))
+           c(palette_colors[1], palette_colors[6]))
+
+df.c.fails = read.csv("./Downloads/Cs378-Concurrency/threadpool/timing/c_fail.csv")
+df.my.fails = read.csv("./Downloads/Cs378-Concurrency/threadpool/timing/my_fail.csv")
+
+# calculate the change in avg fail rate for the threadpools
+df.c.total.fails <- aggregate(totalFails ~ threads, data = df.c.fails, sum)
+df.c.total.fails$totalFails = avg_seq_fail / (df.c.total.fails$totalFails / (42 * 10)) 
+df.c.total.fails
+
+df.my.total.fails <- aggregate(totalFails ~ threads, data = df.my.fails, sum)
+df.my.total.fails$totalFails = avg_seq_fail / (df.my.total.fails$totalFails / (42 * 10))
+df.my.total.fails
 
 
