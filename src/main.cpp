@@ -36,7 +36,7 @@ void callPingPopen(std::string request, int i, std::vector<std::string>& ans) {
     std::string result = ""; // Create a string to accumulate the results
 
     // Execute 'ping' command
-    FILE* pipe = popen(("ping -c 1 " + request).c_str(), "r"); 
+    FILE* pipe = popen(("ping -c 1 -t 1 " + request).c_str(), "r"); 
     if (!pipe) {
         perror("popen");
     }

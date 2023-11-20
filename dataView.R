@@ -18,7 +18,7 @@ df.c.time
 df.my.time
 ### Methods to help me plot graphs and overlay them
 plotGraph2 <- function(results, results2, title, legend, colors) {
-  plot(log(results$threads),
+  plot(log2(results$threads),
        results$execTime, 
        type = "o",
        main = title,
@@ -29,7 +29,7 @@ plotGraph2 <- function(results, results2, title, legend, colors) {
        pch = 19,
        lwd = 3)
   lines(
-    log(results2$threads),
+    log2(results2$threads),
     results2$execTime,
     type = "o",
     col = colors[2],
@@ -42,7 +42,7 @@ plotGraph2 <- function(results, results2, title, legend, colors) {
 }
 
 plotGraph <- function(results, title, legend, colors) {
-  plot(log(results$threads),
+  plot(log2(results$threads),
        results$execTime, 
        type = "o",
        main = title,
@@ -58,7 +58,7 @@ plotGraph <- function(results, title, legend, colors) {
 
 ### Methods to handle graphing fails
 plotGraphFail <- function(results, title, legend, colors) {
-  plot(log(results$threads),
+  plot(log2(results$threads),
        results$totalFails, 
        type = "o",
        main = title,
@@ -73,7 +73,7 @@ plotGraphFail <- function(results, title, legend, colors) {
 }
 
 plotGraphFails2 <- function(results, results2, title, legend, colors) {
-  plot(log(results$threads),
+  plot(log2(results$threads),
        results$totalFails, 
        type = "o",
        main = title,
@@ -84,7 +84,7 @@ plotGraphFails2 <- function(results, results2, title, legend, colors) {
        pch = 19,
        lwd = 3)
   lines(
-    log(results2$threads),
+    log2(results2$threads),
     results2$totalFails,
     type = "o",
     col = colors[2],
@@ -100,6 +100,7 @@ palette_colors <- viridis(8)
 
 plotGraph(df.c.time, "Boost ASIO Threadpool Speedup", 
           c("Boost ASIO"), c(palette_colors[1]))
+
 plotGraph(df.my.time, "Personal Threadpool Implementation Speedup", 
           c("Personal Threadpool"), c(palette_colors[6]))
 
