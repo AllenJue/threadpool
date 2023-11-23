@@ -1,7 +1,7 @@
 library(dplyr)
 library("viridis")         
 
-avg.seq.time = 4.025366900
+avg.seq.time = 3.461231200
 avg.seq.fail = 0
 avg.seq.fail
 

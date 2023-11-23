@@ -78,7 +78,6 @@ void handlePing(const boost::system::error_code& error, int i, const std::string
 void do_sequential(std::vector<std::string> &requests, 
   std::vector<std::string> &results) {
   int n = requests.size();
-  boost::asio::io_context io_context;
 
   for(int i = 0; i < n; i++) {
     callPingPopen(requests[i], i, std::ref(results));
